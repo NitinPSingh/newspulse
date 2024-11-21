@@ -89,9 +89,9 @@ export const usePost = () => {
       fetchPolicy: 'network-only'
     });
 
-    const posts = data?.posts.map((post: any) => ({
+    const posts = data?.posts?.map((post: any) => ({
       ...post,
-      tags: post.post_tags.map((pt: any) => pt.tag)
+      tags: post?.post_tags?.map((pt: any) => pt.tag)
     })) || [];
 
     return {

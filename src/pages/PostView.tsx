@@ -1,15 +1,40 @@
 import React from "react";
+import { useQuery, gql } from "@apollo/client";
 import { useNavigate, useParams } from "react-router-dom";
-import { usePost } from "../hooks/usePosts";
 
+const GET_POST_BY_ID = gql`
+  query GetPostById($id: uuid!) {
+    posts_by_pk(id: $id) {
+      author_id
+      context
+      created_at
+      heading
+      id
+      image_url
+      post_tags {
+        tag {
+          id
+          name
+        }
+      }
+      profile {
+        avatar_url
+        email
+        username
+      }
+    }
+  }
+`;
 
 const PostView: React.FC = () => {
   const { id } = useParams<{ id: string }>(); 
   const navigate = useNavigate();
-  const {getPostsByPostId} = usePost()
 
 
-  const { posts :data, loading, error } = getPostsByPostId(id)
+  const { data, loading, error } = useQuery(GET_POST_BY_ID, {
+    variables: { id },
+    skip: !id, 
+  });
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
