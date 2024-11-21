@@ -1,5 +1,6 @@
 import React, { Suspense, useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
+import useUser from '../hooks/useUser';
 
 
 const GlobalNews = React.lazy(() => import('./GlobalNews'));
@@ -9,6 +10,8 @@ function Home() {
   
   const { isAuthenticated } = useAuth0();
   const [activeTab, setActiveTab] = useState('global');
+  const {profile: user} = useUser()
+  console.log(user)
 
   return (
     <div className="flex min-h-screen flex-col">
